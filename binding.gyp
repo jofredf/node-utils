@@ -1,0 +1,13 @@
+{
+	"targets":[
+		{
+			"target_name":"nutils",
+			"sources":["nutils.cc"]
+		}
+	],
+	"link_settings":{
+		"libraries":[
+			"-lrt"
+		]
+	}
+}

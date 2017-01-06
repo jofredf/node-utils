@@ -1,0 +1,1 @@
+cmd_Release/obj.target/nutils.node := g++ -shared -pthread -rdynamic -m64  -Wl,-soname=nutils.node -o Release/obj.target/nutils.node -Wl,--start-group Release/obj.target/nutils/nutils.o -Wl,--end-group 
