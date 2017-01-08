@@ -2,8 +2,16 @@
 
 struct SetTimeoutHandler
 {
-	uv_work_t request;
+	Persistent<Value> *args;
 	Persistent<Function> callback;
 	int64_t timeMs;
+	SetTimeoutHandler()
+	{
+		args = nullptr;
+	}
+	~SetTimeoutHandler()
+	{
+		callback.Reset();
+	}
 };
 

@@ -98,12 +98,14 @@ void run(SetTimeoutHandler *tmh)
 	}
 	Isolate *isolate = Isolate::GetCurrent();
 	Local<Function> cb = Local<Function>::New(isolate, tmh->callback);
-	if(cb.IsEmpty())
-	{
-		delete tmh;
-		return;
-	}
-	cb->Call(Null(isolate), 0, NULL);
+	tmh->args->Length();
+	/*
+	if(tmh->args->Length() > 2)
+		cb->Call(Null(isolate), tmh->args->Length()-2, &tmh->args[2]);
+	else
+		cb->Call(Null(isolate), 0, NULL);
+	*/
+	//tmh->callback.Reset();
 	delete tmh;
 	return;
 }
@@ -129,9 +131,12 @@ void NMSetTimeout(const FunctionCallbackInfo<Value>& args)
 	}
 	Local<Function> cb = Local<Function>::Cast(args[0]);
 	SetTimeoutHandler *tmh = new SetTimeoutHandler;
-	tmh->request.data = tmh;
-	tmh->timeMs = args[1]->IntegerValue();
+	Local<Value> localArgs[args.Length()];
+	for(int i=0; i<args.Length(); i++)
+		localArgs[i] = args[i];
+	tmh->args->Reset(isolate, *localArgs);
 	tmh->callback.Reset(isolate, cb);
+	tmh->timeMs = args[1]->IntegerValue();
 	sleep(2);
 	run(tmh);
 }
